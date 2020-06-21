@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -47,7 +48,11 @@ func IsVerbose(ctx context.Context) bool {
 	return IsEnabled(LogLevelVerbose)
 }
 
+var m sync.Mutex
+
 func print(msgType string, args ...interface{}) {
+	m.Lock()
+	defer m.Unlock()
 	var funcName string
 	pc, _, _, ok := runtime.Caller(2)
 	details := runtime.FuncForPC(pc)
