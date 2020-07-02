@@ -67,7 +67,7 @@ func print(msgType string, args ...interface{}) {
 		funcName = ""
 	}
 	t := time.Now()
-	fmt.Print(t.Format("2006/01/02 1504"))
+	fmt.Print(t.Format("01-02 15:04:05.000"))
 	fmt.Print(" "+msgType+": ", funcName)
 	if len(args) > 0 {
 		fmt.Print(": ")
