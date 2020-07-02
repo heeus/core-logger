@@ -19,7 +19,7 @@ func Test_BasicUsage(t *testing.T) {
 	// Hello world
 	{
 		// nil canbe used as ctx
-		Error(nil, "My error")
+		Error(nil, "My error", "arg1", "arg2")
 		Warning(nil, "My warning")
 		Info(nil, "My info")
 

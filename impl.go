@@ -70,8 +70,11 @@ func print(msgType string, args ...interface{}) {
 	fmt.Print(t.Format("01-02 15:04:05.000"))
 	fmt.Print(" " + msgType)
 	if len(args) > 0 {
-		fmt.Print(": ")
-		s := fmt.Sprint(args...)
+		fmt.Print(":")
+		var s string
+		for _, arg := range args {
+			s = s + fmt.Sprint(" ", arg)
+		}
 		for i := len(s); i < 60; i++ {
 			s = s + " "
 		}
