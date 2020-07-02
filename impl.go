@@ -68,11 +68,12 @@ func print(msgType string, args ...interface{}) {
 	}
 	t := time.Now()
 	fmt.Print(t.Format("01-02 15:04:05.000"))
-	fmt.Print(" "+msgType+": ", funcName)
+	fmt.Print(" " + msgType)
 	if len(args) > 0 {
 		fmt.Print(": ")
-		fmt.Println(args...)
+		fmt.Print(args...)
 	}
+	fmt.Println(":", funcName)
 }
 
 // Error s.e.
