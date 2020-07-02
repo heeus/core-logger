@@ -71,7 +71,11 @@ func print(msgType string, args ...interface{}) {
 	fmt.Print(" " + msgType)
 	if len(args) > 0 {
 		fmt.Print(": ")
-		fmt.Print(args...)
+		s := fmt.Sprint(args...)
+		for i := len(s); i < 60; i++ {
+			s = s + " "
+		}
+		fmt.Print(s)
 	}
 	fmt.Println(":", funcName)
 }
