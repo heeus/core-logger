@@ -106,6 +106,6 @@ func Info(ctx context.Context, args ...interface{}) {
 // Verbose s.e.
 func Verbose(ctx context.Context, args ...interface{}) {
 	if IsVerbose(ctx) {
-		print("--- DEBUG  ", args...)
+		print("---        ", args...)
 	}
 }
