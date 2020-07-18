@@ -67,8 +67,9 @@ func print(msgType string, args ...interface{}) {
 		funcName = ""
 	}
 	t := time.Now()
-	fmt.Print(t.Format("01-02 15:04:05.000"))
-	fmt.Print(" " + msgType)
+	fmt.Print(t.Format("01/02 15:04:05.000"))
+	fmt.Print(" :" + msgType)
+	fmt.Print(": [" + funcName + "]")
 	if len(args) > 0 {
 		fmt.Print(":")
 		var s string
@@ -80,12 +81,12 @@ func print(msgType string, args ...interface{}) {
 		}
 		fmt.Print(s)
 	}
-	fmt.Println(":", funcName)
+	fmt.Println("")
 }
 
 // Error s.e.
 func Error(ctx context.Context, args ...interface{}) {
-	print("*** ERROR  ", args...)
+	print("*** ERROR", args...)
 
 }
 
@@ -99,13 +100,13 @@ func Warning(ctx context.Context, args ...interface{}) {
 // Info s.e.
 func Info(ctx context.Context, args ...interface{}) {
 	if IsEnabled(LogLevelInfo) {
-		print("*** INFO   ", args...)
+		print("I", args...)
 	}
 }
 
 // Verbose s.e.
 func Verbose(ctx context.Context, args ...interface{}) {
 	if IsVerbose(ctx) {
-		print("---        ", args...)
+		print("-", args...)
 	}
 }
