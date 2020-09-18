@@ -67,11 +67,11 @@ func print(msgType string, args ...interface{}) {
 		funcName = ""
 	}
 	t := time.Now()
-	fmt.Print(t.Format("01/02 15:04:05.000"))
-	fmt.Print(" :" + msgType)
-	fmt.Print(": [" + funcName + "]")
+	out := fmt.Sprint(t.Format("01/02 15:04:05.000"))
+	out += fmt.Sprint(" :" + msgType)
+	out += fmt.Sprint(": [" + funcName + "]")
 	if len(args) > 0 {
-		fmt.Print(":")
+		out += fmt.Sprint(":")
 		var s string
 		for _, arg := range args {
 			s = s + fmt.Sprint(" ", arg)
@@ -79,9 +79,9 @@ func print(msgType string, args ...interface{}) {
 		for i := len(s); i < 60; i++ {
 			s = s + " "
 		}
-		fmt.Print(s)
+		out += fmt.Sprint(s)
 	}
-	fmt.Println("")
+	fmt.Println(out)
 }
 
 // Error s.e.
