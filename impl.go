@@ -54,7 +54,7 @@ func print(msgType string, args ...interface{}) {
 	m.Lock()
 	defer m.Unlock()
 	var funcName string
-	pc, _, _, ok := runtime.Caller(2)
+	pc, _, line, ok := runtime.Caller(2)
 	details := runtime.FuncForPC(pc)
 	if ok && details != nil {
 		elems := strings.Split(details.Name(), "/")
@@ -68,10 +68,9 @@ func print(msgType string, args ...interface{}) {
 	}
 	t := time.Now()
 	out := fmt.Sprint(t.Format("01/02 15:04:05.000"))
-	out += fmt.Sprint(" :" + msgType)
-	out += fmt.Sprint(": [" + funcName + "]")
+	out += fmt.Sprint(": " + msgType)
+	out += fmt.Sprintf(": [%v:%v]:", funcName, line)
 	if len(args) > 0 {
-		out += fmt.Sprint(":")
 		var s string
 		for _, arg := range args {
 			s = s + fmt.Sprint(" ", arg)
@@ -86,27 +85,27 @@ func print(msgType string, args ...interface{}) {
 
 // Error s.e.
 func Error(ctx context.Context, args ...interface{}) {
-	print("*** ERROR", args...)
+	print("**** ERR", args...)
 
 }
 
 // Warning s.e.
 func Warning(ctx context.Context, args ...interface{}) {
 	if IsEnabled(LogLevelWarning) {
-		print("*** WARNING", args...)
+		print("!!! WARN", args...)
 	}
 }
 
 // Info s.e.
 func Info(ctx context.Context, args ...interface{}) {
 	if IsEnabled(LogLevelInfo) {
-		print("I", args...)
+		print("=== INFO", args...)
 	}
 }
 
 // Verbose s.e.
 func Verbose(ctx context.Context, args ...interface{}) {
 	if IsVerbose(ctx) {
-		print("-", args...)
+		print("--- VERB", args...)
 	}
 }
