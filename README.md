@@ -12,4 +12,4 @@ Simple go logger. Default output will be like this:
 09/24 12:36:56.969: **** ERR: [logger.(*mystruct).logMe:59]: OOPS
 ```
 
-See [impl_test.Test_BasicUsage](impl_test.go#19) for examples
+See [impl_test.Test_BasicUsage](impl_test.go#L19) for examples
