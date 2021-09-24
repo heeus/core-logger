@@ -20,30 +20,30 @@ func Test_BasicUsage(t *testing.T) {
 
 	ctx := context.Background()
 
-	// Hello world
+	// "Hello world"
 	{
-		// context.Background() is used if you do not have a context
-		Error(context.Background(), "My error", "arg1", "arg2")
+		// Use context.Background() if you do not have a context
+		Error(context.Background(), "Hello world", "arg1", "arg2")
 		Warning(ctx, "My warning")
 		Info(ctx, "My info")
 
 		// IsVerbose() is used to avoid unnecessary calculations
-		if IsVerbose(context.TODO()) {
-			Verbose(context.TODO(), "!!! You should NOT see it since default level is INFO")
+		if IsVerbose(ctx) {
+			Verbose(ctx, "!!! You should NOT see it since default level is INFO")
 		}
 	}
 	// Changing LogLevel
 	{
 		SetLogLevel(LogLevelVerbose)
-		if IsVerbose(context.TODO()) {
-			Verbose(context.TODO(), "Now you should see my verbose")
+		if IsVerbose(ctx) {
+			Verbose(ctx, "Now you should see my verbose")
 		}
 		SetLogLevel(LogLevelError)
-		Verbose(context.TODO(), "!!! You should NOT see my verbose")
-		Warning(context.TODO(), "!!! You should NOT see my warning")
+		Verbose(ctx, "!!! You should NOT see my verbose")
+		Warning(ctx, "!!! You should NOT see my warning")
 		SetLogLevel(LogLevelInfo)
-		Warning(context.TODO(), "You should see my warning")
-		Warning(context.TODO(), "You should see my info")
+		Warning(ctx, "You should see my warning")
+		Warning(ctx, "You should see my info")
 	}
 	// From struct
 	{
@@ -56,7 +56,7 @@ type mystruct struct {
 }
 
 func (m *mystruct) logMe() {
-	Error(context.TODO(), "OOPS")
+	Error(context.Background(), "OOPS")
 }
 
 func Benchmark_FuncForPC(b *testing.B) {
