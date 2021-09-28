@@ -27,19 +27,19 @@ func Test_BasicUsage(t *testing.T) {
 		Warning(ctx, "My warning")
 		Info(ctx, "My info")
 
-		// IsVerbose() is used to avoid unnecessary calculations
-		if IsVerbose(ctx) {
-			Verbose(ctx, "!!! You should NOT see it since default level is INFO")
+		// IsDebug() is used to avoid unnecessary calculations
+		if IsDebug(ctx) {
+			Debug(ctx, "!!! You should NOT see it since default level is INFO")
 		}
 	}
 	// Changing LogLevel
 	{
-		SetLogLevel(LogLevelVerbose)
-		if IsVerbose(ctx) {
-			Verbose(ctx, "Now you should see my verbose")
+		SetLogLevel(LogLevelDebug)
+		if IsDebug(ctx) {
+			Debug(ctx, "Now you should see my Debug")
 		}
 		SetLogLevel(LogLevelError)
-		Verbose(ctx, "!!! You should NOT see my verbose")
+		Debug(ctx, "!!! You should NOT see my Debug")
 		Warning(ctx, "!!! You should NOT see my warning")
 		SetLogLevel(LogLevelInfo)
 		Warning(ctx, "You should see my warning")

@@ -12,6 +12,6 @@ type ILogger interface {
 	Error(args ...interface{})
 	Info(args ...interface{})
 	Warning(args ...interface{})
-	Verbose(args ...interface{})
-	IsVerbose() bool
+	Debug(args ...interface{})
+	IsDebug() bool
 }

@@ -26,7 +26,7 @@ const (
 	LogLevelError
 	LogLevelWarning
 	LogLevelInfo
-	LogLevelVerbose
+	LogLevelDebug
 )
 
 // LogLevel s.e.
@@ -43,9 +43,9 @@ func IsEnabled(logLevel TLogLevel) bool {
 	return curLogLevel >= logLevel
 }
 
-// IsVerbose s.e.
-func IsVerbose(ctx context.Context) bool {
-	return IsEnabled(LogLevelVerbose)
+// IsDebug s.e.
+func IsDebug(ctx context.Context) bool {
+	return IsEnabled(LogLevelDebug)
 }
 
 var m sync.Mutex
@@ -103,9 +103,9 @@ func Info(ctx context.Context, args ...interface{}) {
 	}
 }
 
-// Verbose s.e.
-func Verbose(ctx context.Context, args ...interface{}) {
-	if IsVerbose(ctx) {
-		print("--- VERB", args...)
+// Debug s.e.
+func Debug(ctx context.Context, args ...interface{}) {
+	if IsDebug(ctx) {
+		print("--- DEBU", args...)
 	}
 }
