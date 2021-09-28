@@ -1,6 +1,6 @@
 # logger
 
-Simple go logger. Default output will be like this:
+Simple go logger with logging level. Default output will be like this:
 
 ```
 09/24 12:36:56.951: **** ERR: [logger.Test_BasicUsage:26]: My error arg1 arg2
