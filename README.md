@@ -3,16 +3,16 @@
 Simple go logger with logging level. Default output will be like this:
 
 ```
-09/28 17:40:57.064: **** ERR: [logger.Test_BasicUsage:26]: Hello world arg1 arg2
-09/28 17:40:57.082: !!! WARN: [logger.Test_BasicUsage:27]: My warning
-09/28 17:40:57.082: === INFO: [logger.Test_BasicUsage:28]: My info
-09/28 17:40:57.082: --- DEBU: [logger.Test_BasicUsage:39]: Now you should see my Debug
-09/28 17:40:57.082: !!! WARN: [logger.Test_BasicUsage:45]: You should see my warning
-09/28 17:40:57.082: !!! WARN: [logger.Test_BasicUsage:46]: You should see my info
-09/28 17:40:57.082: **** ERR: [logger.(*mystruct).logMe:59]: OOPS
+09/29 13:29:04.355: *****: [core-logger.Test_BasicUsage:22]: Hello world arg1 arg2
+09/29 13:29:04.373: !!!: [core-logger.Test_BasicUsage:23]: My warning
+09/29 13:29:04.374: ===: [core-logger.Test_BasicUsage:24]: My info
+09/29 13:29:04.374: ---: [core-logger.Test_BasicUsage:35]: Now you should see my Debug
+09/29 13:29:04.374: !!!: [core-logger.Test_BasicUsage:41]: You should see my warning
+09/29 13:29:04.374: !!!: [core-logger.Test_BasicUsage:42]: You should see my info
+09/29 13:29:04.374: *****: [core-logger.(*mystruct).iWantToLog:55]: OOPS
 ```
 
-See [impl_test.Test_BasicUsage](impl_test.go#L19) for examples
+See [impl_test.Test_BasicUsage](impl_test.go#L18) for examples
 
 # Links
 
