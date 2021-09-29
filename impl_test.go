@@ -8,7 +8,6 @@
 package logger
 
 import (
-	"context"
 	"runtime"
 	"strings"
 	"testing"
@@ -18,45 +17,42 @@ import (
 
 func Test_BasicUsage(t *testing.T) {
 
-	ctx := context.Background()
-
 	// "Hello world"
 	{
-		// Use context.Background() if you do not have a context
-		Error(context.Background(), "Hello world", "arg1", "arg2")
-		Warning(ctx, "My warning")
-		Info(ctx, "My info")
+		Error("Hello world", "arg1", "arg2")
+		Warning("My warning")
+		Info("My info")
 
 		// IsDebug() is used to avoid unnecessary calculations
-		if IsDebug(ctx) {
-			Debug(ctx, "!!! You should NOT see it since default level is INFO")
+		if IsDebug() {
+			Debug("!!! You should NOT see it since default level is INFO")
 		}
 	}
 	// Changing LogLevel
 	{
 		SetLogLevel(LogLevelDebug)
-		if IsDebug(ctx) {
-			Debug(ctx, "Now you should see my Debug")
+		if IsDebug() {
+			Debug("Now you should see my Debug")
 		}
 		SetLogLevel(LogLevelError)
-		Debug(ctx, "!!! You should NOT see my Debug")
-		Warning(ctx, "!!! You should NOT see my warning")
+		Debug("!!! You should NOT see my Debug")
+		Warning("!!! You should NOT see my warning")
 		SetLogLevel(LogLevelInfo)
-		Warning(ctx, "You should see my warning")
-		Warning(ctx, "You should see my info")
+		Warning("You should see my warning")
+		Warning("You should see my info")
 	}
-	// From struct
+	// Let see how it looks when using from methods
 	{
 		m := mystruct{}
-		m.logMe()
+		m.iWantToLog()
 	}
 }
 
 type mystruct struct {
 }
 
-func (m *mystruct) logMe() {
-	Error(context.Background(), "OOPS")
+func (m *mystruct) iWantToLog() {
+	Error("OOPS")
 }
 
 func Benchmark_FuncForPC(b *testing.B) {

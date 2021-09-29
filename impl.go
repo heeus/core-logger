@@ -8,7 +8,6 @@
 package logger
 
 import (
-	"context"
 	"fmt"
 	"runtime"
 	"strings"
@@ -29,22 +28,18 @@ const (
 	LogLevelDebug
 )
 
-// LogLevel s.e.
 var globalLogLevel = LogLevelInfo
 
-// SetLogLevel s.e.
 func SetLogLevel(logLevel TLogLevel) {
 	atomic.StoreInt32((*int32)(&globalLogLevel), int32(logLevel))
 }
 
-// IsEnabled s.e.
 func IsEnabled(logLevel TLogLevel) bool {
 	curLogLevel := TLogLevel(atomic.LoadInt32((*int32)(&globalLogLevel)))
 	return curLogLevel >= logLevel
 }
 
-// IsDebug s.e.
-func IsDebug(ctx context.Context) bool {
+func IsDebug() bool {
 	return IsEnabled(LogLevelDebug)
 }
 
@@ -84,28 +79,28 @@ func print(msgType string, args ...interface{}) {
 }
 
 // Error s.e.
-func Error(ctx context.Context, args ...interface{}) {
+func Error(args ...interface{}) {
 	print("**** ERR", args...)
 
 }
 
 // Warning s.e.
-func Warning(ctx context.Context, args ...interface{}) {
+func Warning(args ...interface{}) {
 	if IsEnabled(LogLevelWarning) {
 		print("!!! WARN", args...)
 	}
 }
 
 // Info s.e.
-func Info(ctx context.Context, args ...interface{}) {
+func Info(args ...interface{}) {
 	if IsEnabled(LogLevelInfo) {
 		print("=== INFO", args...)
 	}
 }
 
 // Debug s.e.
-func Debug(ctx context.Context, args ...interface{}) {
-	if IsDebug(ctx) {
+func Debug(args ...interface{}) {
+	if IsDebug() {
 		print("--- DEBU", args...)
 	}
 }
