@@ -80,27 +80,27 @@ func print(msgType string, args ...interface{}) {
 
 // Error s.e.
 func Error(args ...interface{}) {
-	print("**** ERR", args...)
+	print("*****", args...)
 
 }
 
 // Warning s.e.
 func Warning(args ...interface{}) {
 	if IsEnabled(LogLevelWarning) {
-		print("!!! WARN", args...)
+		print("!!!", args...)
 	}
 }
 
 // Info s.e.
 func Info(args ...interface{}) {
 	if IsEnabled(LogLevelInfo) {
-		print("=== INFO", args...)
+		print("===", args...)
 	}
 }
 
 // Debug s.e.
 func Debug(args ...interface{}) {
 	if IsDebug() {
-		print("--- DEBU", args...)
+		print("---", args...)
 	}
 }
