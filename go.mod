@@ -1,4 +1,4 @@
-module github.com/untillpro/logger
+module github.com/heeus/core-logger
 
 go 1.17
 
