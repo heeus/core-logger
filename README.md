@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/heeus/core-logger/branch/main/graph/badge.svg?token=R8903H0E1V)](https://codecov.io/gh/heeus/core-logger)
 # logger
 
 Simple go logger with logging level. Default output will be like this:
