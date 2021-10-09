@@ -8,9 +8,8 @@
 package logger
 
 import (
-	"runtime"
-	"strings"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -48,6 +47,60 @@ func Test_BasicUsage(t *testing.T) {
 	}
 }
 
+func Test_CheckSetLevels(t *testing.T) {
+	// 1. Info LogLevel = LogLevelInfo
+	SetLogLevel(LogLevelInfo)
+	assert.False(t, IsDebug())
+	assert.True(t, IsEnabled(LogLevelInfo))
+	assert.True(t, IsEnabled(LogLevelWarning))
+	assert.True(t, IsEnabled(LogLevelError))
+
+	// 2. Debug LogLevel = LogLevelDebug
+	SetLogLevel(LogLevelDebug)
+	assert.True(t, IsDebug())
+	assert.True(t, IsEnabled(LogLevelInfo))
+	assert.True(t, IsEnabled(LogLevelWarning))
+	assert.True(t, IsEnabled(LogLevelError))
+
+	// 3. Warning LogLevel = LogLevelWarning
+	SetLogLevel(LogLevelWarning)
+	assert.False(t, IsDebug())
+	assert.False(t, IsEnabled(LogLevelInfo))
+	assert.True(t, IsEnabled(LogLevelWarning))
+	assert.True(t, IsEnabled(LogLevelError))
+
+	// 4. Error LogLevel = LogLevelError
+	SetLogLevel(LogLevelError)
+	assert.False(t, IsDebug())
+	assert.False(t, IsEnabled(LogLevelInfo))
+	assert.False(t, IsEnabled(LogLevelWarning))
+	assert.True(t, IsEnabled(LogLevelError))
+}
+
+func Test_CheckRightPrefix(t *testing.T) {
+	// 1. Info LogLevel = LogLevelInfo
+	SetLogLevel(LogLevelInfo)
+	assert.Equal(t, getLevelPrefix(globalLogPrinter.logLevel), infoPrefix)
+
+	// 2. Debug LogLevel = LogLevelDebug
+	SetLogLevel(LogLevelDebug)
+	assert.Equal(t, getLevelPrefix(globalLogPrinter.logLevel), debugPrefix)
+
+	// 3. Warning LogLevel = LogLevelWarning
+	SetLogLevel(LogLevelWarning)
+	assert.Equal(t, getLevelPrefix(globalLogPrinter.logLevel), warningPrefix)
+
+	// 4. Error LogLevel = LogLevelError
+	SetLogLevel(LogLevelError)
+	assert.Equal(t, getLevelPrefix(globalLogPrinter.logLevel), errorPrefix)
+
+	// 5. Unexisting level
+	SetLogLevel(7)
+	assert.Equal(t, getLevelPrefix(globalLogPrinter.logLevel), "")
+
+	SetLogLevel(LogLevelInfo)
+}
+
 type mystruct struct {
 }
 
@@ -57,19 +110,15 @@ func (m *mystruct) iWantToLog() {
 
 func Benchmark_FuncForPC(b *testing.B) {
 	var funcName string
+
+	start := time.Now()
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
-		pc, _, _, ok := runtime.Caller(2)
-		details := runtime.FuncForPC(pc)
-		if ok && details != nil {
-			elems := strings.Split(details.Name(), "/")
-			if len(elems) > 1 {
-				funcName = elems[len(elems)-1]
-			} else {
-				funcName = details.Name()
-			}
-		} else {
-			funcName = ""
-		}
+		funcName, _ = globalLogPrinter.getFuncName()
 	}
-	assert.True(b, len(funcName) > 0)
+	assert.Equal(b, funcName, "testing.(*B).runN")
+
+	elapsed := time.Since(start).Seconds()
+	b.ReportMetric(float64(b.N)/elapsed, "rps")
 }
