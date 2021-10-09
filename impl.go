@@ -19,7 +19,10 @@ import (
 // TLogLevel s.e.
 type TLogLevel int32
 
-const skipStackFramesCount = 2
+const (
+	skipStackFramesCount = 2
+	normalLineLength     = 60
+)
 
 // Log Levels enum
 const (
@@ -88,7 +91,7 @@ func (p *logPrinter) print(msgType string, args ...interface{}) {
 		for _, arg := range args {
 			s = s + fmt.Sprint(" ", arg)
 		}
-		for i := len(s); i < 60; i++ {
+		for i := len(s); i < normalLineLength; i++ {
 			s = s + " "
 		}
 		out += fmt.Sprint(s)
