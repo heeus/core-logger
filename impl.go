@@ -76,12 +76,7 @@ func (p *logPrinter) getFuncName() (funcName string, line int) {
 	return fn, line
 }
 
-func (p *logPrinter) print(msgType string, args ...interface{}) {
-	p.Lock()
-	defer p.Unlock()
-
-	funcName, line := p.getFuncName()
-
+func (p *logPrinter) getFormattedMsg(msgType string, funcName string, line int, args ...interface{}) string {
 	t := time.Now()
 	out := fmt.Sprint(t.Format("01/02 15:04:05.000"))
 	out += fmt.Sprint(": " + msgType)
@@ -96,7 +91,17 @@ func (p *logPrinter) print(msgType string, args ...interface{}) {
 		}
 		out += fmt.Sprint(s)
 	}
+	return out
+}
+
+func (p *logPrinter) print(msgType string, args ...interface{}) {
+	p.Lock()
+	defer p.Unlock()
+
+	funcName, line := p.getFuncName()
+	out := p.getFormattedMsg(msgType, funcName, line, args...)
 	fmt.Println(out)
+
 }
 
 func getLevelPrefix(level TLogLevel) string {
@@ -121,20 +126,20 @@ func printIfLevel(level TLogLevel, args ...interface{}) {
 
 // Error s.e.
 func Error(args ...interface{}) {
-	printIfLevel(LogLevelError, args)
+	printIfLevel(LogLevelError, args...)
 }
 
 // Warning s.e.
 func Warning(args ...interface{}) {
-	printIfLevel(LogLevelWarning, args)
+	printIfLevel(LogLevelWarning, args...)
 }
 
 // Info s.e.
 func Info(args ...interface{}) {
-	printIfLevel(LogLevelInfo, args)
+	printIfLevel(LogLevelInfo, args...)
 }
 
 // Debug s.e.
 func Debug(args ...interface{}) {
-	printIfLevel(LogLevelDebug, args)
+	printIfLevel(LogLevelDebug, args...)
 }

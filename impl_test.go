@@ -8,6 +8,7 @@
 package logger
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -45,6 +46,22 @@ func Test_BasicUsage(t *testing.T) {
 		m := mystruct{}
 		m.iWantToLog()
 	}
+}
+
+func Test_MsgFormatter(t *testing.T) {
+	var out string
+
+	out = globalLogPrinter.getFormattedMsg("", "sync_op.doSync", 120, "line1")
+	assert.True(t, strings.Contains(out, ": [sync_op.doSync:120]: line1"))
+
+	out = globalLogPrinter.getFormattedMsg("", "", 121, "line1", "line2")
+	assert.True(t, strings.Contains(out, ": [:121]: line1 line2"))
+
+	out = globalLogPrinter.getFormattedMsg("m1:m2/m3", "sync_op.doSync", 126, "line1", "line2", "line3")
+	assert.True(t, strings.Contains(out, "m1:m2/m3: [sync_op.doSync:126]: line1 line2 line3"))
+
+	out = globalLogPrinter.getFormattedMsg("m1:m2/m3", "sync_op.doSync", 127, "line/1", "line/2", "line/3")
+	assert.True(t, strings.Contains(out, "m1:m2/m3: [sync_op.doSync:127]: line/1 line/2 line/3"))
 }
 
 func Test_CheckSetLevels(t *testing.T) {
