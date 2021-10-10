@@ -118,6 +118,12 @@ func Test_CheckRightPrefix(t *testing.T) {
 	SetLogLevel(LogLevelInfo)
 }
 
+func Test_GetFuncName(t *testing.T) {
+	funcName, line := globalLogPrinter.getFuncName()
+	assert.Equal(t, funcName, "testing.tRunner")
+	assert.True(t, line > 0)
+}
+
 type mystruct struct {
 }
 

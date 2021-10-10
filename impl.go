@@ -97,11 +97,9 @@ func (p *logPrinter) getFormattedMsg(msgType string, funcName string, line int, 
 func (p *logPrinter) print(msgType string, args ...interface{}) {
 	p.Lock()
 	defer p.Unlock()
-
 	funcName, line := p.getFuncName()
 	out := p.getFormattedMsg(msgType, funcName, line, args...)
 	fmt.Println(out)
-
 }
 
 func getLevelPrefix(level TLogLevel) string {
