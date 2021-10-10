@@ -28,7 +28,7 @@ func Test_BasicUsage(t *testing.T) {
 			Debug("!!! You should NOT see it since default level is INFO")
 		}
 	}
-	// Changing LogLevel
+	// Changing LogLevelgolan
 	{
 		SetLogLevel(LogLevelDebug)
 		if IsDebug() {
@@ -119,7 +119,7 @@ func Test_CheckRightPrefix(t *testing.T) {
 }
 
 func Test_GetFuncName(t *testing.T) {
-	funcName, line := globalLogPrinter.getFuncName()
+	funcName, line := globalLogPrinter.getFuncName(2)
 	assert.Equal(t, funcName, "testing.tRunner")
 	assert.True(t, line > 0)
 }
@@ -138,7 +138,7 @@ func Benchmark_FuncForPC(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		funcName, _ = globalLogPrinter.getFuncName()
+		funcName, _ = globalLogPrinter.getFuncName(2)
 	}
 	assert.Equal(b, funcName, "testing.(*B).runN")
 

@@ -20,7 +20,7 @@ import (
 type TLogLevel int32
 
 const (
-	skipStackFramesCount = 2
+	skipStackFramesCount = 4
 	normalLineLength     = 60
 )
 
@@ -63,9 +63,9 @@ type logPrinter struct {
 	sync.Mutex
 }
 
-func (p *logPrinter) getFuncName() (funcName string, line int) {
+func (p *logPrinter) getFuncName(skipCount int) (funcName string, line int) {
 	var fn string
-	pc, _, line, ok := runtime.Caller(skipStackFramesCount)
+	pc, _, line, ok := runtime.Caller(skipCount)
 	details := runtime.FuncForPC(pc)
 	if ok && details != nil {
 		elems := strings.Split(details.Name(), "/")
@@ -97,7 +97,7 @@ func (p *logPrinter) getFormattedMsg(msgType string, funcName string, line int, 
 func (p *logPrinter) print(msgType string, args ...interface{}) {
 	p.Lock()
 	defer p.Unlock()
-	funcName, line := p.getFuncName()
+	funcName, line := p.getFuncName(skipStackFramesCount)
 	out := p.getFormattedMsg(msgType, funcName, line, args...)
 	fmt.Println(out)
 }
