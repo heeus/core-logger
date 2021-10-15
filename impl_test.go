@@ -8,11 +8,17 @@
 package logger
 
 import (
+	"bytes"
+	"io"
+	"os"
+	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_BasicUsage(t *testing.T) {
@@ -129,6 +135,58 @@ type mystruct struct {
 
 func (m *mystruct) iWantToLog() {
 	Error("OOPS")
+}
+
+func TestMultithread(t *testing.T) {
+	require := require.New(t)
+	r, w, err := os.Pipe()
+	require.Nil(err)
+	oldStdout := os.Stdout
+	defer func() { os.Stdout = oldStdout }()
+	os.Stdout = w
+	wg := sync.WaitGroup{}
+	wg.Add(1000)
+
+	toLog := []string{}
+	for i := 0; i < 100; i++ {
+		toLog = append(toLog, strings.Repeat(strconv.Itoa(i), 10))
+	}
+
+	for i := 0; i < 1000; i++ {
+		go func() {
+			for i := 0; i < 100; i++ {
+				Info(toLog[i])
+			}
+			wg.Done()
+		}()
+	}
+
+	stdout := ""
+	wait := make(chan struct{})
+	go func() {
+		buf := bytes.NewBuffer(nil)
+		_, err := io.Copy(buf, r)
+		require.Nil(err)
+		stdout = buf.String()
+		close(wait)
+	}()
+	wg.Wait()
+	w.Close()
+	<-wait
+
+	logged := strings.Split(stdout, "\n")
+outer:
+	for _, loggedActual := range logged {
+		if len(loggedActual) == 0 {
+			continue
+		}
+		for _, loggedExpected := range toLog {
+			if strings.Contains(loggedActual, loggedExpected) {
+				continue outer
+			}
+		}
+		t.Fatal(loggedActual)
+	}
 }
 
 func Benchmark_FuncForPC(b *testing.B) {
