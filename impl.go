@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
-	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -60,7 +59,6 @@ func IsDebug() bool {
 
 type logPrinter struct {
 	logLevel TLogLevel
-	sync.Mutex
 }
 
 func (p *logPrinter) getFuncName(skipCount int) (funcName string, line int) {
@@ -95,8 +93,6 @@ func (p *logPrinter) getFormattedMsg(msgType string, funcName string, line int, 
 }
 
 func (p *logPrinter) print(msgType string, args ...interface{}) {
-	p.Lock()
-	defer p.Unlock()
 	funcName, line := p.getFuncName(skipStackFramesCount)
 	out := p.getFormattedMsg(msgType, funcName, line, args...)
 	fmt.Println(out)
