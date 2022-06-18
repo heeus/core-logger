@@ -92,8 +92,8 @@ func (p *logPrinter) getFormattedMsg(msgType string, funcName string, line int, 
 	return out
 }
 
-func (p *logPrinter) print(msgType string, args ...interface{}) {
-	funcName, line := p.getFuncName(skipStackFramesCount)
+func (p *logPrinter) printEx(skipStackFrames int, msgType string, args ...interface{}) {
+	funcName, line := p.getFuncName(skipStackFramesCount + skipStackFrames)
 	out := p.getFormattedMsg(msgType, funcName, line, args...)
 	fmt.Println(out)
 }
@@ -112,28 +112,44 @@ func getLevelPrefix(level TLogLevel) string {
 	return ""
 }
 
-func printIfLevel(level TLogLevel, args ...interface{}) {
+func printIfLevelEx(skipStackFrames int, level TLogLevel, args ...interface{}) {
 	if IsEnabled(level) {
-		globalLogPrinter.print(getLevelPrefix(level), args...)
+		globalLogPrinter.printEx(skipStackFrames, getLevelPrefix(level), args...)
 	}
 }
 
 // Error s.e.
 func Error(args ...interface{}) {
-	printIfLevel(LogLevelError, args...)
+	printIfLevelEx(0, LogLevelError, args...)
+}
+
+func ErrorSSF(skipStackFrames int, args ...interface{}) {
+	printIfLevelEx(skipStackFrames, LogLevelError, args...)
 }
 
 // Warning s.e.
 func Warning(args ...interface{}) {
-	printIfLevel(LogLevelWarning, args...)
+	printIfLevelEx(0, LogLevelWarning, args...)
+}
+
+func WarningSSF(skipStackFrames int, args ...interface{}) {
+	printIfLevelEx(skipStackFrames, LogLevelWarning, args...)
 }
 
 // Info s.e.
 func Info(args ...interface{}) {
-	printIfLevel(LogLevelInfo, args...)
+	printIfLevelEx(0, LogLevelInfo, args...)
+}
+
+func InfoSSF(skipStackFrames int, args ...interface{}) {
+	printIfLevelEx(skipStackFrames, LogLevelInfo, args...)
 }
 
 // Debug s.e.
 func Debug(args ...interface{}) {
-	printIfLevel(LogLevelDebug, args...)
+	printIfLevelEx(0, LogLevelDebug, args...)
+}
+
+func DebugSSF(skipStackFrames int, args ...interface{}) {
+	printIfLevelEx(skipStackFrames, LogLevelDebug, args...)
 }

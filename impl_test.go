@@ -54,6 +54,19 @@ func Test_BasicUsage(t *testing.T) {
 	}
 }
 
+func Test_BasicUsage_SkipStackFrames(t *testing.T) {
+	myLogger("Hello world")
+}
+
+func myLogger(msg string) {
+	SetLogLevel(LogLevelDebug)
+	ErrorSSF(1, msg)
+	WarningSSF(1, msg)
+	InfoSSF(1, msg)
+	DebugSSF(1, msg)
+	SetLogLevel(LogLevelInfo)
+}
+
 func Test_MsgFormatter(t *testing.T) {
 	var out string
 
