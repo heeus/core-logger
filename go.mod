@@ -1,4 +1,4 @@
-module github.com/heeus/core-logger
+module github.com/ivvist/core-logger
 
 go 1.17
 
